@@ -28,12 +28,21 @@ public class SceneChangerScript : MonoBehaviour
     {
         yield return new WaitForSeconds(0.8f);
 
-#if UNITY_EDITOR
-        // UnityEditor only exists inside the editor, so it must be wrapped,
-        // otherwise building the game fails.
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        /*#if UNITY_EDITOR
+                // UnityEditor only exists inside the editor, so it must be wrapped,
+                // otherwise building the game fails.
+                UnityEditor.EditorApplication.isPlaying = false;
+        #else
+                Application.Quit();
+        #endif*/
+
+        if (UnityEditor.EditorApplication.isPlaying)
+        {
+            UnityEditor.EditorApplication.isPlaying = false;
+        }
+        else
+        {
+            Application.Quit();
+        }
     }
 }

@@ -14,7 +14,7 @@ public static class GameSettings
     const string KeyMusicVolume = "settings_music_volume";
     const string KeySfxVolume   = "settings_sfx_volume";
     const string KeyBrightness  = "settings_brightness";
-    const string KeyQuality     = "settings_quality";
+    const string KeyQuality     = "settings_graphics_quality";
     const string KeyResWidth    = "settings_res_width";
     const string KeyResHeight   = "settings_res_height";
     const string KeyFullscreen  = "settings_fullscreen";
@@ -31,7 +31,8 @@ public static class GameSettings
     public static float MusicVolume = DefaultMusicVolume;
     public static float SfxVolume   = DefaultSfxVolume;
     public static float Brightness  = DefaultBrightness;
-    public static int   QualityLevel;
+    /// <summary>0 = Low, 1 = High (see GraphicsQuality).</summary>
+    public static int   QualityLevel = GraphicsQuality.High;
     public static int   ResolutionWidth;
     public static int   ResolutionHeight;
     public static bool  Fullscreen = true;
@@ -42,8 +43,7 @@ public static class GameSettings
         Load();
 
         // Apply saved display settings only if the player has saved them before.
-        if (PlayerPrefs.HasKey(KeyQuality))
-            QualitySettings.SetQualityLevel(QualityLevel, true);
+        GraphicsQuality.Apply(QualityLevel);
         if (PlayerPrefs.HasKey(KeyResWidth))
             ApplyResolution();
 
@@ -56,7 +56,7 @@ public static class GameSettings
         MusicVolume      = PlayerPrefs.GetFloat(KeyMusicVolume, DefaultMusicVolume);
         SfxVolume        = PlayerPrefs.GetFloat(KeySfxVolume, DefaultSfxVolume);
         Brightness       = Mathf.Clamp(PlayerPrefs.GetFloat(KeyBrightness, DefaultBrightness), MinBrightness, 1f);
-        QualityLevel     = PlayerPrefs.GetInt(KeyQuality, QualitySettings.GetQualityLevel());
+        QualityLevel     = PlayerPrefs.GetInt(KeyQuality, GraphicsQuality.High) == GraphicsQuality.Low ? GraphicsQuality.Low : GraphicsQuality.High;
         ResolutionWidth  = PlayerPrefs.GetInt(KeyResWidth, Screen.currentResolution.width);
         ResolutionHeight = PlayerPrefs.GetInt(KeyResHeight, Screen.currentResolution.height);
         Fullscreen       = PlayerPrefs.GetInt(KeyFullscreen, Screen.fullScreen ? 1 : 0) == 1;
@@ -75,10 +75,10 @@ public static class GameSettings
         PlayerPrefs.Save();
     }
 
-    /// <summary>Applies resolution, window mode and quality.</summary>
+    /// <summary>Applies resolution, window mode and graphics quality.</summary>
     public static void ApplyDisplay()
     {
-        QualitySettings.SetQualityLevel(QualityLevel, true);
+        GraphicsQuality.Apply(QualityLevel);
         ApplyResolution();
     }
 

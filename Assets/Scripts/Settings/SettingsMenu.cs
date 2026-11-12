@@ -181,11 +181,12 @@ public class SettingsMenu : MonoBehaviour
         RefreshAll();
     }
 
+    // Only two options (Low / High), so both arrows just switch between them.
     void ChangeQuality(int step)
     {
-        int count = QualitySettings.names.Length;
-        if (count == 0) return;
-        GameSettings.QualityLevel = (GameSettings.QualityLevel + step + count) % count;
+        GameSettings.QualityLevel = GameSettings.QualityLevel == GraphicsQuality.Low
+            ? GraphicsQuality.High
+            : GraphicsQuality.Low;
         RefreshAll();
     }
 
@@ -244,10 +245,7 @@ public class SettingsMenu : MonoBehaviour
         resolutionText.text = $"{GameSettings.ResolutionWidth} x {GameSettings.ResolutionHeight}";
         displayModeText.text = GameSettings.Fullscreen ? "Fullscreen" : "Windowed";
 
-        string[] names = QualitySettings.names;
-        qualityText.text = GameSettings.QualityLevel >= 0 && GameSettings.QualityLevel < names.Length
-            ? names[GameSettings.QualityLevel]
-            : "-";
+        qualityText.text = GraphicsQuality.Name(GameSettings.QualityLevel);
 
         RefreshTrack();
 
