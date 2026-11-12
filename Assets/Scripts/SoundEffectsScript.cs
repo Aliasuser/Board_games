@@ -7,25 +7,26 @@ public class SoundEffectsScript : MonoBehaviour
 
     public void Hover()
     {
-        if(audioClips.Length > 0)
-        {
-            effectsSource.PlayOneShot(audioClips[0]);
-        }
+        PlayClip(0);
     }
+
     public void Click()
     {
-        if (audioClips.Length > 0)
-        {
-            effectsSource.PlayOneShot(audioClips[1]);
-        }
+        PlayClip(1);
     }
 
     public void OnDice()
     {
-        if (audioClips.Length > 0)
-        {
-            effectsSource.PlayOneShot(audioClips[2]);
-        }
+        PlayClip(2);
     }
 
+    void PlayClip(int index)
+    {
+        if (effectsSource == null || audioClips == null || index >= audioClips.Length || audioClips[index] == null)
+            return;
+
+        // Sound effect volume from the Settings scene.
+        effectsSource.volume = GameSettings.SfxVolume;
+        effectsSource.PlayOneShot(audioClips[index]);
+    }
 }

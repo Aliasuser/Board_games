@@ -34,7 +34,7 @@ public class MusicPlaylist : MonoBehaviour
     [Tooltip("Drag your BackgroundMusic AudioSource here. If empty, the AudioSource on this GameObject is used (or one is added).")]
     public AudioSource musicSource;
 
-    [Range(0f, 1f)] public float volume = 0.6f;
+    // Volume now comes from GameSettings (changed in the Settings scene).
 
     [Tooltip("Silent gap in seconds between tracks.")]
     public float gapBetweenTracks = 0f;
@@ -51,6 +51,17 @@ public class MusicPlaylist : MonoBehaviour
     private bool appPaused;
     private float nextTrackTime = -1f;
     private static MusicPlaylist instance;
+    private bool isDuplicate;
+
+    /// <summary>The music player that is currently playing (null if none).</summary>
+    public static MusicPlaylist Instance => instance;
+
+    /// <summary>Called every time a new track starts. Used by the Settings scene.</summary>
+    public event System.Action<AudioClip> TrackChanged;
+
+    /// <summary>Name of the track that is playing right now.</summary>
+    public string CurrentTrackName =>
+        source != null && source.clip != null ? source.clip.name : "-";
 
     void Awake()
     {
@@ -59,11 +70,16 @@ public class MusicPlaylist : MonoBehaviour
         {
             if (instance != null && instance != this)
             {
+                isDuplicate = true;
                 Destroy(gameObject);
                 return;
             }
             instance = this;
             DontDestroyOnLoad(gameObject);
+        }
+        else if (instance == null)
+        {
+            instance = this;
         }
 
         source = musicSource != null ? musicSource : GetComponent<AudioSource>();
@@ -72,19 +88,25 @@ public class MusicPlaylist : MonoBehaviour
         source.Stop();                // stop any clip preset on the source
         source.loop = false;          // we handle looping ourselves
         source.playOnAwake = false;
-        source.volume = volume;
+        source.volume = GameSettings.MusicVolume;
     }
 
     void Start()
     {
+        if (isDuplicate) return;
         if (playOnStart) Play();
+    }
+
+    void OnDestroy()
+    {
+        if (instance == this) instance = null;
     }
 
     void Update()
     {
-        if (source == null || tracks.Count == 0) return;
+        if (isDuplicate || source == null || tracks.Count == 0) return;
 
-        source.volume = volume;
+        source.volume = GameSettings.MusicVolume;
 
         // Waiting through the gap between tracks.
         if (nextTrackTime >= 0f)
@@ -134,6 +156,36 @@ public class MusicPlaylist : MonoBehaviour
         PlayNext();
     }
 
+    /// <summary>Plays the next track (same as Skip).</summary>
+    public void Next() => Skip();
+
+    /// <summary>Goes back to the previous track in the list.</summary>
+    public void Previous()
+    {
+        if (tracks.Count == 0) return;
+        nextTrackTime = -1f;
+
+        int index = currentIndex;
+        int safety = tracks.Count;
+        do
+        {
+            index = (index - 1 + tracks.Count) % tracks.Count;
+        } while (tracks[index] == null && --safety > 0);
+
+        PlayIndex(index);
+    }
+
+    /// <summary>Plays the track with the given index in the list.</summary>
+    public void PlayIndex(int index)
+    {
+        if (index < 0 || index >= tracks.Count || tracks[index] == null) return;
+        currentIndex = index;
+        nextTrackTime = -1f;
+        source.clip = tracks[currentIndex];
+        source.Play();
+        TrackChanged?.Invoke(source.clip);
+    }
+
     // ---------- Internals ----------
 
     private void PlayNext()
@@ -158,6 +210,7 @@ public class MusicPlaylist : MonoBehaviour
 
         source.clip = tracks[currentIndex];
         source.Play();
+        TrackChanged?.Invoke(source.clip);
         Debug.Log($"MusicPlaylist: now playing \"{source.clip.name}\" ({currentIndex + 1}/{tracks.Count})");
     }
 
