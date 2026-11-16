@@ -8,8 +8,9 @@ public class ChooseCharacterScript : MonoBehaviour
     int characterIndex;
 
     public GameObject inputField;
+    public GameObject countField;
     string characterName;
-    public int playerCount = 3;
+    public int playerCount;
     public SceneChangerScript sceneChangerScript;
 
    
@@ -42,5 +43,22 @@ public class ChooseCharacterScript : MonoBehaviour
             characterIndex = characters.Length-1;
         }
         characters[characterIndex].SetActive(true);
+    }
+
+    public void Play()
+    {
+        characterName = inputField.GetComponent<TMPro.TMP_InputField>().text;
+        playerCount = countField.GetComponent<TMPro.TMP_Dropdown>().value+1;
+        if (characterName.Length > 2)
+        {
+            PlayerPrefs.SetInt("SelectedCharacter", characterIndex);
+            PlayerPrefs.SetString("PlayName", characterName);
+            PlayerPrefs.SetInt("PlayerCount", playerCount);
+            //StartCoroutine(sceneChangerScript.Delay("play", characterIndex, characterName, playerCount));
+        }
+        else
+        {
+           inputField.GetComponent<TMPro.TMP_InputField>().Select();
+        }
     }
 }
