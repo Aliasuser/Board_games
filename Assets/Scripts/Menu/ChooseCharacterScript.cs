@@ -21,6 +21,7 @@ public class ChooseCharacterScript : MonoBehaviour
         {
             character.SetActive(false);
         }
+        characters[characterIndex].SetActive(true);
     }
     
     public void NextCharacter()
@@ -54,7 +55,7 @@ public class ChooseCharacterScript : MonoBehaviour
             PlayerPrefs.SetInt("SelectedCharacter", characterIndex);
             PlayerPrefs.SetString("PlayName", characterName);
             PlayerPrefs.SetInt("PlayerCount", playerCount);
-            //StartCoroutine(sceneChangerScript.Delay("play", characterIndex, characterName, playerCount));
+            StartCoroutine(sceneChangerScript.Delay("play", characterIndex, characterName, playerCount));
         }
         else
         {
