@@ -35,6 +35,7 @@ public class SaveLoadScript : MonoBehaviour
             string json = File.ReadAllText(filePath);
             gameData = JsonUtility.FromJson<GameData>(json);
             Debug.Log("Player data loaded from " + filePath);
+            Debug.Log("Character Index: " + gameData.characterIndex + ", Character Name: " + gameData.character + ", Player Count: " + gameData.playerCount);
 
         }
         else

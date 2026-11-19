@@ -29,7 +29,7 @@ public class SceneChangerScript : MonoBehaviour
         if(string.Equals(action, "quit", StringComparison.OrdinalIgnoreCase))
         {
             yield return new WaitForSeconds(0.5f);
-            PlayerPrefs.DeleteAll();
+            //PlayerPrefs.DeleteAll();
 
             
             if (UnityEditor.EditorApplication.isPlaying) 
@@ -58,6 +58,11 @@ public class SceneChangerScript : MonoBehaviour
             yield return fadeScript.FadeOut(0.5f);
             SceneManager.LoadScene(1, LoadSceneMode.Single);
         }
+        else if (string.Equals(action, "leaderboard", StringComparison.OrdinalIgnoreCase))
+        {
+            yield return fadeScript.FadeOut(0.5f);
+            SceneManager.LoadScene(3, LoadSceneMode.Single);
+        }
     }
 
     public void LoadScene(string sceneName)
@@ -73,6 +78,11 @@ public class SceneChangerScript : MonoBehaviour
     public void ToSettings()
     {
         StartCoroutine(Delay("settings", -1, "", -1));
+    }
+
+    public void ToLeaderboard()
+    {
+        StartCoroutine(Delay("leaderboard", -1, "", -1));
     }
 
 

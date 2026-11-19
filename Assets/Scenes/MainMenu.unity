@@ -4086,7 +4086,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1043679628}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1552836545}
+        m_TargetAssemblyTypeName: SceneChangerScript, Assembly-CSharp
+        m_MethodName: ToLeaderboard
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1043679628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6578,6 +6590,12 @@ MonoBehaviour:
   jigPosition: 1
   positionJigAmount: {x: 20, y: 20, z: 0}
   positionFrequency: 5
+  jigRotation: 1
+  rotationJigAmount: {x: 0, y: 0, z: 0}
+  rotationFrequency: 0
+  jigScale: 0
+  scaleJigAmount: {x: 0, y: 0, z: 0}
+  scaleFrequency: 10
 --- !u!1 &1582233368
 GameObject:
   m_ObjectHideFlags: 0
