@@ -30,17 +30,18 @@ public class SceneChangerScript : MonoBehaviour
         {
             yield return new WaitForSeconds(0.5f);
             //PlayerPrefs.DeleteAll();
+            yield return fadeScript.FadeOut(0.5f);
+            Application.Quit();
 
-            
-            if (UnityEditor.EditorApplication.isPlaying) 
-                UnityEditor.EditorApplication.isPlaying = false;
-            else
-            {
-                yield return fadeScript.FadeOut(0.5f);
-                Application.Quit();
-            }
-                
-            
+            /* if (UnityEditor.EditorApplication.isPlaying) 
+                 UnityEditor.EditorApplication.isPlaying = false;
+             else
+             {
+                 yield return fadeScript.FadeOut(0.5f);
+                 Application.Quit();
+             }*/
+
+
 
         }
         else if(string.Equals(action, "play", StringComparison.OrdinalIgnoreCase))

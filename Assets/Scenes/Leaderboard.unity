@@ -2886,6 +2886,7 @@ GameObject:
   - component: {fileID: 1808882517}
   - component: {fileID: 1869083755}
   - component: {fileID: 959662595}
+  - component: {fileID: 1869083756}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -8270,6 +8271,28 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1869083756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 500383727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89ae69acad2337940adb45ff5af048dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  power: 0.1
+  jigPosition: 1
+  positionJigAmount: {x: 20, y: 20, z: 0}
+  positionFrequency: 10
+  jigRotation: 1
+  rotationJigAmount: {x: 0, y: 0, z: 0}
+  rotationFrequency: 0
+  jigScale: 0
+  scaleJigAmount: {x: 0, y: 0, z: 0}
+  scaleFrequency: 10
 --- !u!1 &1918312962
 GameObject:
   m_ObjectHideFlags: 0
