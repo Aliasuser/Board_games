@@ -11,7 +11,7 @@ public class NameScript : MonoBehaviour
         tMP = transform.Find("NameField").gameObject.GetComponent<TextMeshPro>();
     }
 
-    public void SetPlayerName()
+    public void SetPlayerName(string name)
     {
         tMP.text = name;
         tMP.color = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
